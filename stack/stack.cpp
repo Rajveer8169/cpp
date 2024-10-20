@@ -1,91 +1,55 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
+#include <vector>
+using namespace std;
 
-#define MAX_SIZE 100
+class Stack {
+private:
+    vector<int> stack;
 
-int stack[MAX_SIZE];
-int top = -1;
-
-void push() {
-	int item;
-    if (top == MAX_SIZE - 1) {
-        printf("Stack is full. Cannot push element.\n");
-    } else {
-    	  printf("Enter element to push: ");
-                scanf("%d", &item);
-    	top++;
-        stack[top] = item;
-        printf("Element %d pushed into the stack.\n", item);
+public:
+    // Push operation to insert an element into the stack
+    void push(int value) {
+        stack.push_back(value);
+        cout << value << " pushed into stack.\n";
     }
-}
 
-int pop() {
-    if (top < 0) {
-        printf("Stack is empty. Cannot pop element.\n");
-        return -1;
-    } else {
-       
-        printf("Element %d popped from the stack.\n", stack[top]);
-        top--;
-        return 0;
-    }
-}
-
-void peek() {
-    if (top < 0) {
-        printf("Stack is empty.\n");
-    } else {
-        printf("Top element: %d\n", stack[top]);
-    }
-}
-
-void display() {
-    if (top < 0) {
-        printf("Stack is empty.\n");
-    } else {
-        printf("Stack elements: ");
-        for (int i = 0; i <= top; ++i) {
-            printf("%d ", stack[i]);
+    // Pop operation to remove the top element from the stack
+    void pop() {
+        if (stack.empty()) {
+            cout << "Stack Underflow. Cannot pop from an empty stack.\n";
+        } else {
+            int topElement = stack.back();
+            stack.pop_back();
+            cout << topElement << " popped from stack.\n";
         }
-        printf("\n");
     }
-}
+
+    // Peek operation to view the top element without removing it
+    void peek() {
+        if (stack.empty()) {
+            cout << "Stack is empty.\n";
+        } else {
+            cout << "Top element is: " << stack.back() << endl;
+        }
+    }
+
+    // Check if the stack is empty
+    bool isEmpty() {
+        return stack.empty();
+    }
+};
 
 int main() {
-    int choice, item;
-
-    while (1) {
-        printf("\nStack Menu:\n");
-        printf("1. Push\n");
-        printf("2. Pop\n");
-        printf("3. Peek\n");
-        printf("4. Display\n");
-        printf("5. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-
-        switch (choice) {
-            case 1:
-              push();
-              break;
-                break;
-            case 2:
-                pop();
-                break;
-            case 3:
-                peek();
-                break;
-            case 4:
-                display();
-                break;
-            case 5:
-                printf("Exiting the program. Goodbye!\n");
-                exit(0);
-            default:
-                printf("Invalid choice. Please try again.\n");
-        }
-    }
+    Stack s;
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    s.peek();   // Peek top element
+    s.pop();    // Pop top element
+    s.peek();   // Peek after popping
+    s.pop();
+    s.pop();
+    s.pop();    // Attempt to pop from an empty stack
 
     return 0;
 }
-
