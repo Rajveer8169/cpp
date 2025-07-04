@@ -1,50 +1,31 @@
-#include<iostream>
-#include<vector>
-using namespace std;
-void helper(vector<int>set , int target , vector<vector<int>>& subset , vector<int>current , int i)
-{
-    if (i==set.size())
-    {
-        return ;
+class Solution {
+public:
+vector<vector<int>> ans;
+
+void helper(vector<int> candidates , int target , int tempsum , vector<int> temp , int i){
+    if(tempsum > target){
+        return;
     }
-    current.push_back(set[i]);
-    int sum=0;
-    for(int num : current)
-    {
-        sum = sum + num;
+
+if (i>=candidates.size()){
+    if(tempsum==target){
+        ans.push_back(temp);
+        return;
     }
-    if (sum==target)
-    {
-        subset.push_back(current);
-    }
-    helper(set,target,subset,current,i+1);
-    current.pop_back();
-      int sums=0;
-    for(int num : current)
-    {
-        sums = sums + num;
-    }
-    if (sums==target)
-    {
-        subset.push_back(current);
-    }
-     helper(set,target,subset,current,i+1);
-     return;
+return;
+}
+tempsum = tempsum + candidates[i];
+temp.push_back(candidates[i]);
+helper(candidates , target , tempsum , temp , i);
+tempsum = tempsum - candidates[i];
+temp.pop_back();
+helper(candidates , target , tempsum , temp , i+1);
+return;
 }
 
-int main()
-{
-    vector<int>set={3,34,4,12,5,2};
-    vector<vector<int>>subset;
-    vector<int>current;
-    helper(set , 9 ,subset , current , 0);
-      cout << "Subsets:" << endl;
-    for (const auto& subsets : subset) {
-        cout << "{ ";
-        for (int num : subsets) {
-            cout << num << " ";
-        }
-        cout << "}" << endl;
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> temp;
+        helper(candidates , target , 0 , temp , 0);
+        return ans;
     }
-    return 0;
-}
+};
