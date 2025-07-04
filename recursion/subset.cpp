@@ -1,54 +1,34 @@
-#include <iostream>
-#include <vector>
+// User function Template for C++
 
-using namespace std;
-
-
-void printPermutation(const vector<int>& current) {
-    for (int num : current) {
-        cout << num << " ";
-    }
-    cout << endl;
-}
-// Function to recursively generate all subsets
-void generateSubsetsRec(const vector<int>& set, int index, vector<int>& current, vector<vector<int>>& subsets) {
-    if (index == set.size()) {
-       printPermutation(current);
+class Solution {
+  public:
+   void subsetRecur(int i, vector<int>& arr, 
+       vector<vector<int>>& res, vector<int>& subset) {
+    
+    // add subset at end of array
+    if (i == arr.size()) {
+        res.push_back(subset);
         return;
     }
-    current.push_back(set[index]);
-    // Exclude the current element and proceed
-    generateSubsetsRec(set, index + 1, current, subsets);
     
-    // Include the current element and proceed
-  current.pop_back();
-    generateSubsetsRec(set, index + 1, current, subsets);
-    // Backtrack to remove the current element before moving to the next step
-  
+    // include the current value and 
+    // recursively find all subsets
+    subset.push_back(arr[i]);
+    subsetRecur(i+1, arr, res, subset);
+    
+    // exclude the current value and 
+    // recursively find all subsets.
+    subset.pop_back();
+    subsetRecur(i+1, arr, res, subset);
 }
 
-int main() {
-    // Input set
-    vector<int> set = {1, 2, 3};
-
-    // Vector to hold all subsets
-    vector<vector<int>> subsets;
-
-    // Temporary vector to store the current subset
-    vector<int> current;
-
-    // Generate subsets
-    generateSubsetsRec(set, 0, current, subsets);
-
-    // Print subsets
-    cout << "Subsets:" << endl;
-    for (const auto& subset : subsets) {
-        cout << "{ ";
-        for (int num : subset) {
-            cout << num << " ";
-        }
-        cout << "}" << endl;
-    }
-
-    return 0;
+vector<vector<int> > subsets(vector<int>& arr) {
+    
+    sort(arr.begin(),arr.end());
+    vector<int> subset;
+    vector<vector<int>> res;
+    subsetRecur(0, arr, res, subset);
+    sort(res.begin(), res.end());
+    return res;
 }
+};
