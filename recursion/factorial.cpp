@@ -7,3 +7,5 @@ int factorial(int n) {
     return fact;
     // code here
 }
+Time Complexity = O(n)
+Space Complexity = O(n)
