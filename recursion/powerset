@@ -1,0 +1,25 @@
+class Solution{
+	public:
+	void helper(string s , vector<string>& ans , string output ,int i ){
+	   if(s.size() == i){
+	       if(!output.empty()){
+	       ans.push_back(output);
+	       }
+	       return;
+	   }
+	    output.push_back(s[i]);
+	    helper(s,ans,output,i+1);
+	    output.pop_back();
+	    helper(s,ans,output,i+1);
+	}
+	
+		vector<string> AllPossibleStrings(string s){
+		    // Code here
+		    vector<string> ans;
+		    string output;
+		    helper(s,ans,"",0);
+		    sort(ans.begin(),ans.end());
+		    return ans;
+		    
+		}
+};
