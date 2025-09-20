@@ -1,3 +1,5 @@
+DUTCH FLAG ALGORITHM
+
 #include<iostream>
 using namespace std;
 void helper(int arr[],int low,int mid,int high)
