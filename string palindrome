@@ -1,0 +1,42 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    // Recursive helper function
+    bool helper(string s, int start, int end) {
+        if(start >= end) {
+            return true;
+        }
+
+        if(s[start] != s[end]) {
+            return false;
+        }
+
+        return helper(s, start + 1, end - 1);
+    }
+
+    // Function to check if string is palindrome
+    bool isPalindrome(string &s) {
+        int start = 0;
+        int end = s.size() - 1;
+        return helper(s, start, end);
+    }
+};
+
+int main() {
+    Solution obj;
+    string s;
+
+    cout << "Enter a string: ";
+    cin >> s;
+
+    if(obj.isPalindrome(s)) {
+        cout << "Palindrome";
+    } else {
+        cout << "Not Palindrome";
+    }
+
+    return 0;
+}
