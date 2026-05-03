@@ -1,0 +1,64 @@
+Time Complexity (TC): O(n²)
+Space Complexity (SC): O(1) (excluding output), O(k) (including result)
+Pattern: Sorting + Two Pointers (reduce 3Sum → 2Sum)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> ans;
+
+        // Step 1: Sort the array
+        // Required for two-pointer technique and duplicate handling
+        sort(nums.begin(), nums.end());
+
+        // Step 2: Fix the first element (nums[i])
+        // Run till n-2 because we need at least 3 elements
+        for(int i = 0; i < nums.size() - 2; i++) {
+
+            // Skip duplicate values for i to avoid repeated triplets
+            if(i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            // Step 3: Two pointers for remaining part
+            int j = i + 1;              // left pointer
+            int k = nums.size() - 1;   // right pointer
+
+            // Step 4: Find pairs such that sum = 0
+            while(j < k) {
+                int sum = nums[i] + nums[j] + nums[k];
+
+                // Case 1: Found valid triplet
+                if(sum == 0) {
+                    ans.push_back({nums[i], nums[j], nums[k]});
+
+                    // Move both pointers
+                    j++;
+                    k--;
+
+                    // Skip duplicates for j (left pointer)
+                    while(j < k && nums[j] == nums[j - 1]) j++;
+
+                    // Skip duplicates for k (right pointer)
+                    while(j < k && nums[k] == nums[k + 1]) k--;
+                }
+
+                // Case 2: Sum is smaller → increase sum
+                else if(sum < 0) {
+                    j++;  // move left pointer right
+                }
+
+                // Case 3: Sum is larger → decrease sum
+                else {
+                    k--;  // move right pointer left
+                }
+            }
+        }
+
+        // Return all unique triplets
+        return ans;
+    }
+};
