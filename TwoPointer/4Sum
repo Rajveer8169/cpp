@@ -1,0 +1,98 @@
+/*
+Time Complexity (TC): O(n³)
+Space Complexity (SC): O(1) (excluding output), O(k) (including result)
+Pattern: Sorting + Two Pointers (reduce 4Sum → 3Sum → 2Sum)
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+
+        vector<vector<int>> ans;
+
+        // Step 1: Sort the array
+        // Required for two-pointer technique and duplicate handling
+        sort(nums.begin(), nums.end());
+
+        int n = nums.size();
+
+        // Step 2: Fix the first element (nums[i])
+        // Run till n-3 because we need at least 4 elements
+        for(int i = 0; i < n - 3; i++) {
+
+            // Skip duplicate values for i
+            // Avoid repeated quadruplets
+            if(i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            // Step 3: Fix the second element (nums[j])
+            for(int j = i + 1; j < n - 2; j++) {
+
+                // Skip duplicate values for j
+                if(j > i + 1 && nums[j] == nums[j - 1]) {
+                    continue;
+                }
+
+                // Step 4: Two pointers for remaining part
+                int left = j + 1;   // left pointer
+                int right = n - 1; // right pointer
+
+                // Step 5: Find pairs such that
+                // nums[i] + nums[j] + nums[left] + nums[right] = target
+                while(left < right) {
+
+                    // Use long long to avoid integer overflow
+                    long long sum =
+                        (long long)nums[i] +
+                        nums[j] +
+                        nums[left] +
+                        nums[right];
+
+                    // Case 1: Found valid quadruplet
+                    if(sum == target) {
+
+                        ans.push_back({
+                            nums[i],
+                            nums[j],
+                            nums[left],
+                            nums[right]
+                        });
+
+                        // Move both pointers
+                        left++;
+                        right--;
+
+                        // Skip duplicates for left pointer
+                        while(left < right &&
+                              nums[left] == nums[left - 1]) {
+                            left++;
+                        }
+
+                        // Skip duplicates for right pointer
+                        while(left < right &&
+                              nums[right] == nums[right + 1]) {
+                            right--;
+                        }
+                    }
+
+                    // Case 2: Sum is smaller → increase sum
+                    else if(sum < target) {
+                        left++;
+                    }
+
+                    // Case 3: Sum is larger → decrease sum
+                    else {
+                        right--;
+                    }
+                }
+            }
+        }
+
+        // Return all unique quadruplets
+        return ans;
+    }
+};
