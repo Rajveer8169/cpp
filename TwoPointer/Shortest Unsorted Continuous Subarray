@@ -1,0 +1,57 @@
+Time Complexity (TC): O(n + m)
+Space Complexity (SC): O(1)
+Pattern: Two Pointers (Reverse Traversal)
+
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+
+        int n = nums.size();
+
+        // Two pointers
+        int left = 0;
+        int right = n - 1;
+
+        // Find first disorder from left side
+        // Move until array remains sorted
+        while (left < n - 1 && nums[left] <= nums[left + 1]) {
+            left++;
+        }
+
+        // If array is already sorted
+        if (left == n - 1) {
+            return 0;
+        }
+
+        // Find first disorder from right side
+        // Move backwards until array remains sorted
+        while (right > 0 && nums[right] >= nums[right - 1]) {
+            right--;
+        }
+
+        // Find minimum and maximum element
+        // inside unsorted window
+        int mini = INT_MAX;
+        int maxi = INT_MIN;
+
+        for (int i = left; i <= right; i++) {
+            mini = min(mini, nums[i]);
+            maxi = max(maxi, nums[i]);
+        }
+
+        // Expand left boundary
+        // if previous elements are greater than mini
+        while (left > 0 && nums[left - 1] > mini) {
+            left--;
+        }
+
+        // Expand right boundary
+        // if next elements are smaller than maxi
+        while (right < n - 1 && nums[right + 1] < maxi) {
+            right++;
+        }
+
+        // Length of shortest unsorted subarray
+        return right - left + 1;
+    }
+};
