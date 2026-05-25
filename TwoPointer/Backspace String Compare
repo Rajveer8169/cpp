@@ -1,0 +1,88 @@
+/*
+Time Complexity (TC): O(n + m)
+Space Complexity (SC): O(1)
+Pattern: Two Pointers (Reverse Traversal)
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+
+    bool backspaceCompare(string s, string t) {
+
+        // Pointer for string s
+        int i = s.size() - 1;
+
+        // Pointer for string t
+        int j = t.size() - 1;
+
+        while(i >= 0 || j >= 0) {
+
+            int backS = 0;
+            int backT = 0;
+
+            // Process string s
+            while(i >= 0) {
+
+                // Found backspace
+                if(s[i] == '#') {
+                    backS++;
+                    i--;
+                }
+
+                // Character to remove
+                else if(backS > 0) {
+                    backS--;
+                    i--;
+                }
+
+                // Valid character found
+                else {
+                    break;
+                }
+            }
+
+            // Process string t
+            while(j >= 0) {
+
+                // Found backspace
+                if(t[j] == '#') {
+                    backT++;
+                    j--;
+                }
+
+                // Character to remove
+                else if(backT > 0) {
+                    backT--;
+                    j--;
+                }
+
+                // Valid character found
+                else {
+                    break;
+                }
+            }
+
+            // Compare current valid characters
+            if(i >= 0 && j >= 0) {
+
+                if(s[i] != t[j]) {
+                    return false;
+                }
+            }
+
+            // One string ended before the other
+            else if(i >= 0 || j >= 0) {
+                return false;
+            }
+
+            // Move to next character
+            i--;
+            j--;
+        }
+
+        return true;
+    }
+};
