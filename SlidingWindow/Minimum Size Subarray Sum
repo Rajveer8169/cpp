@@ -1,0 +1,48 @@
+// Problem: 209. Minimum Size Subarray Sum
+// Approach: Sliding Window Technique
+
+class Solution {
+public:
+    
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+
+        int left = 0;
+        int sum = 0;
+
+        // Initialize answer with large value
+        int minLen = INT_MAX;
+
+        // Expand the window using right pointer
+        for(int right = 0; right < n; right++) {
+
+            // Add current element to window sum
+            sum += nums[right];
+
+            // Shrink the window while condition is satisfied
+            while(sum >= target) {
+
+                // Update minimum length
+                minLen = min(minLen, right - left + 1);
+
+                // Remove left element and move left pointer
+                sum -= nums[left];
+                left++;
+            }
+        }
+
+        // If no valid subarray found, return 0
+        return (minLen == INT_MAX) ? 0 : minLen;
+    }
+};
+
+/*
+Time Complexity (TC): O(n)
+- Each element is added and removed from the window at most once.
+
+Space Complexity (SC): O(1)
+- Constant extra space is used.
+
+Pattern Used:
+- Sliding Window Technique
+*/
