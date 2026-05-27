@@ -1,0 +1,44 @@
+// Problem: Max Sum Subarray of Size K
+// Approach: Sliding Window Technique
+
+class Solution {
+  public:
+  
+    int maximumSumSubarray(vector<int>& arr, int k) {
+        int n = arr.size();
+        
+        int windowSum = 0;
+
+        // Step 1: Calculate sum of first window of size k
+        for(int i = 0; i < k; i++) {
+            windowSum += arr[i];
+        }
+
+        // Initialize maximum sum with first window sum
+        int maxSum = windowSum;
+
+        // Step 2: Slide the window from left to right
+        for(int i = k; i < n; i++) {
+            
+            // Add next element and remove first element of previous window
+            windowSum += arr[i] - arr[i - k];
+
+            // Update maximum sum
+            maxSum = max(maxSum, windowSum);
+        }
+
+        // Return maximum subarray sum of size k
+        return maxSum;
+    }
+};
+
+/*
+Time Complexity (TC): O(n)
+- Each element is added and removed at most once.
+
+Space Complexity (SC): O(1)
+- Constant extra space is used.
+
+Pattern Used:
+- Sliding Window Technique
+*/
