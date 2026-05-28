@@ -1,0 +1,40 @@
+// Time Complexity (TC): O(n)
+// Space Complexity (SC): O(1)
+// Pattern: Sliding Window + Two Pointers
+
+class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
+
+        int n = nums.size();
+
+        int left = 0;          // Left pointer of sliding window
+        int zeros = 0;         // Count of zeros in current window
+        int maxLen = 0;        // Stores maximum valid window length
+
+        // Expand window using right pointer
+        for(int right = 0; right < n; right++) {
+
+            // If current element is 0, increase zero count
+            if(nums[right] == 0) {
+                zeros++;
+            }
+
+            // If zeros exceed k, shrink window
+            while(zeros > k) {
+
+                // Remove left element from window
+                if(nums[left] == 0) {
+                    zeros--;
+                }
+
+                left++;
+            }
+
+            // Update maximum consecutive ones length
+            maxLen = max(maxLen, right - left + 1);
+        }
+
+        return maxLen;
+    }
+};
