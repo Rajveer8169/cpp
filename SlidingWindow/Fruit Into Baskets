@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+
+        // TC: O(n)
+        // SC: O(1)
+        // Pattern: Sliding Window + HashMap
+
+        int n = fruits.size();
+
+        int left = 0;
+        int maxLen = 0;
+
+        unordered_map<int, int> mp;
+
+        for(int right = 0; right < n; right++) {
+
+            // Add current fruit into basket
+            mp[fruits[right]]++;
+
+            // If basket contains more than 2 fruit types,
+            // shrink the window from left side
+            while(mp.size() > 2) {
+
+                // Remove left fruit from window
+                mp[fruits[left]]--;
+
+                // Erase fruit type if frequency becomes 0
+                if(mp[fruits[left]] == 0) {
+                    mp.erase(fruits[left]);
+                }
+
+                // Move left pointer forward
+                left++;
+            }
+
+            // Update maximum fruits collected
+            maxLen = max(maxLen, right - left + 1);
+        }
+
+        return maxLen;
+    }
+};
