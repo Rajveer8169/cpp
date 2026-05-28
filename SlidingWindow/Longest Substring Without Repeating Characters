@@ -1,0 +1,43 @@
+// Time Complexity (TC): O(n)
+// Space Complexity (SC): O(256) ≈ O(1)
+// Pattern: Sliding Window + Two Pointers + HashMap
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+
+        int n = s.size();
+
+        int left = 0;          // Left pointer of sliding window
+        int maxLen = 0;        // Stores maximum substring length
+
+        unordered_map<char, int> mp;   // Stores frequency of characters
+
+        // Expand window using right pointer
+        for(int right = 0; right < n; right++) {
+
+            // Add current character into hashmap
+            mp[s[right]]++;
+
+            // If duplicate character exists, shrink window
+            while(mp[s[right]] > 1) {
+
+                // Remove left character from window
+                mp[s[left]]--;
+
+                // Erase character if frequency becomes 0
+                if(mp[s[left]] == 0) {
+                    mp.erase(s[left]);
+                }
+
+                // Move left pointer forward
+                left++;
+            }
+
+            // Update maximum valid window length
+            maxLen = max(maxLen, right - left + 1);
+        }
+
+        return maxLen;
+    }
+};
