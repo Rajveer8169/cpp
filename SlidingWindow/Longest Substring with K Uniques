@@ -1,0 +1,42 @@
+class Solution {
+  public:
+    int longestKSubstr(string &s, int k) {
+
+        // TC: O(n)
+        // SC: O(1)
+        // Pattern: Sliding Window + HashMap
+
+        int n = s.size();
+
+        int left = 0;
+        int maxlen = -1;
+
+        unordered_map<char, int> mp;
+
+        for(int right = 0; right < n; right++) {
+
+            // Add current character
+            mp[s[right]]++;
+
+            // Shrink window if unique characters exceed k
+            while(mp.size() > k) {
+
+                mp[s[left]]--;
+
+                // Remove character if frequency becomes 0
+                if(mp[s[left]] == 0) {
+                    mp.erase(s[left]);
+                }
+
+                left++;
+            }
+
+            // Update answer only when exactly k unique characters
+            if(mp.size() == k) {
+                maxlen = max(maxlen, right - left + 1);
+            }
+        }
+
+        return maxlen;
+    }
+};
