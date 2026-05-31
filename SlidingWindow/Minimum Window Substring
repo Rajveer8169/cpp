@@ -1,0 +1,79 @@
+class Solution {
+public:
+
+    /*
+    Pattern: Sliding Window + Hash Map (Variable Size Window)
+
+    Time Complexity (TC): O(n + m)
+    - O(m) to build the frequency map of string t
+    - O(n) for sliding window traversal of string s
+    - Each character is visited at most twice (left and right pointers)
+
+    Space Complexity (SC): O(k)
+    - k = number of distinct characters in t
+    - Frequency map stores character counts
+    - For ASCII characters, this is effectively O(1)
+    */
+
+    string minWindow(string s, string t) {
+
+        // Frequency map to store required characters from t
+        unordered_map<char, int> mp;
+
+        for(char ch : t) {
+            mp[ch]++;
+        }
+
+        int left = 0;
+
+        // Number of characters still needed to make a valid window
+        int count = t.size();
+
+        // Variables to store the minimum window
+        int minLen = INT_MAX;
+        int startIndex = 0;
+
+        // Expand the window using right pointer
+        for(int right = 0; right < s.size(); right++) {
+
+            // If current character is still needed,
+            // reduce the remaining required count
+            if(mp[s[right]] > 0) {
+                count--;
+            }
+
+            // Include current character in the window
+            mp[s[right]]--;
+
+            // Valid window found (contains all characters of t)
+            while(count == 0) {
+
+                // Update minimum window if current one is smaller
+                if(right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    startIndex = left;
+                }
+
+                // Remove leftmost character from the window
+                mp[s[left]]++;
+
+                // If this character becomes required again,
+                // window is no longer valid
+                if(mp[s[left]] > 0) {
+                    count++;
+                }
+
+                // Shrink the window
+                left++;
+            }
+        }
+
+        // No valid window found
+        if(minLen == INT_MAX) {
+            return "";
+        }
+
+        // Return the smallest valid window substring
+        return s.substr(startIndex, minLen);
+    }
+};
