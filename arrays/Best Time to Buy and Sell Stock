@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+
+        // Minimum price seen so far
+        int mini = INT_MAX;
+
+        // Maximum profit found so far
+        int maxi = 0;
+
+        for (int price : prices) {
+
+            // Update minimum buying price
+            if (price < mini) {
+                mini = price;
+            }
+            // Calculate profit if sold today
+            else {
+                maxi = max(maxi, price - mini);
+            }
+        }
+
+        return maxi;
+    }
+};
+
+/*
+Time Complexity (TC): O(n)
+- Traverse the array once.
+
+Space Complexity (SC): O(1)
+- Only two extra variables (mini and maxi) are used.
+
+Pattern: Greedy + Maintain Minimum So Far
+*/
