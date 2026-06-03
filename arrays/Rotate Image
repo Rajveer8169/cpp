@@ -1,0 +1,42 @@
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+
+        // Step 1: Transpose the matrix
+        // Convert rows into columns by swapping matrix[i][j] with matrix[j][i]
+        for(int i = 0; i < n - 1; i++) {
+            for(int j = i + 1; j < n; j++) {
+                swap(matrix[i][j], matrix[j][i]);
+            }
+        }
+
+        // Step 2: Reverse each row
+        // This gives the 90-degree clockwise rotation
+        for(int i = 0; i < n; i++) {
+            reverse(matrix[i].begin(), matrix[i].end());
+        }
+    }
+};
+
+/*
+Approach:
+1. Transpose the matrix:
+   - Rows become columns.
+2. Reverse every row:
+   - This completes the 90° clockwise rotation.
+
+Example:
+1 2 3        1 4 7        7 4 1
+4 5 6  -->   2 5 8  -->   8 5 2
+7 8 9        3 6 9        9 6 3
+
+Time Complexity:
+- Transpose: O(n²)
+- Reverse each row: O(n²)
+- Total: O(n²)
+
+Space Complexity:
+- O(1)
+  (Rotation is performed in-place without extra matrix.)
+*/
