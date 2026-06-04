@@ -1,0 +1,72 @@
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        int n = s1.size();
+        int m = s2.size();
+
+        if (n > m) return false;
+
+        unordered_map<char, int> mp1, mp2;
+
+        // Frequency of s1 and first window of s2
+        for (int i = 0; i < n; i++) {
+            mp1[s1[i]]++;
+            mp2[s2[i]]++;
+        }
+
+        // Check first window
+        if (mp1 == mp2) return true;
+
+        // Slide the window
+        for (int i = n; i < m; i++) {
+            // Add new character to window
+            mp2[s2[i]]++;
+
+            // Remove old character from window
+            mp2[s2[i - n]]--;
+
+            // Remove key if frequency becomes 0
+            if (mp2[s2[i - n]] == 0) {
+                mp2.erase(s2[i - n]);
+            }
+
+            // Compare frequency maps
+            if (mp1 == mp2) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+};
+
+/*
+Time Complexity:
+O(m * k)
+
+m = length of s2
+k = number of distinct characters in the map
+
+Map comparison (mp1 == mp2) takes O(k),
+and it happens for each window.
+
+For lowercase English letters, k <= 26,
+so practically this behaves close to O(m).
+
+Space Complexity:
+O(k)
+
+k = number of distinct characters
+At most 26 for lowercase English letters.
+
+Pattern:
+Fixed Size Sliding Window
+1. Store frequency of s1.
+2. Store frequency of first window of size s1.length().
+3. Compare maps.
+4. Slide window:
+   - Add right character.
+   - Remove left character.
+   - Erase character if count becomes 0.
+5. If maps match, a permutation exists.
+*/
