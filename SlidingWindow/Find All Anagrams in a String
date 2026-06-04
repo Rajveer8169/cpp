@@ -1,0 +1,83 @@
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        int n = p.size();
+        int m = s.size();
+
+        // If pattern length is greater than string length,
+        // no anagram is possible
+        if (n > m) return {};
+
+        // Stores starting indices of all anagrams
+        vector<int> ans;
+
+        // Frequency maps for pattern and current window
+        unordered_map<char, int> mp1, mp2;
+
+        // Build frequency map of pattern and first window
+        for (int i = 0; i < n; i++) {
+            mp1[p[i]]++;
+            mp2[s[i]]++;
+        }
+
+        // Check the first window
+        if (mp1 == mp2) {
+            ans.push_back(0);
+        }
+
+        // Slide the window across the string
+        for (int i = n; i < m; i++) {
+
+            // Add new character entering the window
+            mp2[s[i]]++;
+
+            // Remove character leaving the window
+            mp2[s[i - n]]--;
+
+            // Remove key if frequency becomes 0
+            if (mp2[s[i - n]] == 0) {
+                mp2.erase(s[i - n]);
+            }
+
+            // If frequencies match, current window is an anagram
+            if (mp1 == mp2) {
+                ans.push_back(i - n + 1);
+            }
+        }
+
+        return ans;
+    }
+};
+
+/*
+Pattern Used:
+Fixed Size Sliding Window + Frequency Map
+
+Steps:
+1. Store frequency of pattern string p.
+2. Store frequency of first window of size p.length().
+3. Compare both frequency maps.
+4. Slide the window:
+   - Add the new right character.
+   - Remove the old left character.
+   - Erase character if frequency becomes 0.
+5. If frequencies match, store the starting index.
+
+Time Complexity:
+O(m * k)
+
+m = length of s
+k = number of distinct characters in the map
+
+Map comparison (mp1 == mp2) takes O(k)
+and is done for each window.
+
+For lowercase English letters,
+k <= 26, so it is practically close to O(m).
+
+Space Complexity:
+O(k)
+
+k = number of distinct characters stored in the maps.
+At most 26 for lowercase English letters.
+*/
