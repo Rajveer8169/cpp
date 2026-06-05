@@ -1,0 +1,96 @@
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> ans;
+
+        int n = s.size();
+        int wordLen = words[0].size();
+        int wordNum = words.size();
+        int totalLen = wordLen * wordNum;
+
+        if (n < totalLen) return ans;
+
+        unordered_map<string, int> target;
+
+        // Store required frequencies of words
+        for (string word : words) {
+            target[word]++;
+        }
+
+        // Try every possible offset
+        for (int offset = 0; offset < wordLen; offset++) {
+
+            unordered_map<string, int> window;
+
+            int left = offset;
+            int count = 0;
+
+            // Move right pointer word by word
+            for (int right = offset; right + wordLen <= n; right += wordLen) {
+
+                string word = s.substr(right, wordLen);
+
+                // Word exists in target map
+                if (target.count(word)) {
+
+                    window[word]++;
+                    count++;
+
+                    // Frequency exceeded -> shrink window
+                    while (window[word] > target[word]) {
+
+                        string leftWord = s.substr(left, wordLen);
+
+                        window[leftWord]--;
+                        left += wordLen;
+                        count--;
+                    }
+
+                    // Found valid concatenation
+                    if (count == wordNum) {
+
+                        ans.push_back(left);
+
+                        string leftWord = s.substr(left, wordLen);
+                        window[leftWord]--;
+                        left += wordLen;
+                        count--;
+                    }
+                }
+                else {
+                    // Invalid word -> reset window
+                    window.clear();
+                    count = 0;
+                    left = right + wordLen;
+                }
+            }
+        }
+
+        return ans;
+    }
+};
+
+/*
+Pattern:
+Sliding Window + Hash Map
+
+Idea:
+1. Store required word frequencies.
+2. Process string using offsets [0 ... wordLen-1].
+3. Move right pointer one word at a time.
+4. Maintain frequencies inside current window.
+5. If a frequency exceeds requirement,
+   shrink from the left.
+6. When count == number of words,
+   store the starting index.
+
+Time Complexity:
+O(n)
+
+Each word enters and leaves the window at most once.
+
+Space Complexity:
+O(k)
+
+k = number of distinct words.
+*/
