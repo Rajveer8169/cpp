@@ -1,0 +1,44 @@
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+
+        // Edge case: empty matrix
+        if(matrix.size() == 0) {
+            return false;
+        }
+
+        int n = matrix.size();      // number of rows
+        int m = matrix[0].size();   // number of columns
+
+        // Binary search on the virtual 1D array
+        int low = 0;
+        int high = n * m - 1;
+
+        while(low <= high) {
+
+            // Middle index
+            int mid = low + (high - low) / 2;
+
+            // Convert 1D index to 2D coordinates
+            int row = mid / m;
+            int col = mid % m;
+
+            if(matrix[row][col] == target) {
+                return true;
+            }
+            else if(matrix[row][col] < target) {
+                low = mid + 1;
+            }
+            else {
+                high = mid - 1;
+            }
+        }
+
+        return false;
+    }
+};
+
+/*
+Time Complexity: O(log(n * m))
+Space Complexity: O(1)
+*/
