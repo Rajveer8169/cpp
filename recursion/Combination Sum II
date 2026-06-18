@@ -1,0 +1,72 @@
+class Solution {
+public:
+    vector<vector<int>> ans;
+
+    void helper(int index, vector<int>& candidates, int target, vector<int>& temp) {
+
+        // Base case: target achieved
+        if(target == 0) {
+            ans.push_back(temp);
+            return;
+        }
+
+        for(int i = index; i < candidates.size(); i++) {
+
+            // Skip duplicate elements at the same recursion level
+            if(i > index && candidates[i] == candidates[i - 1])
+                continue;
+
+            // Pruning:
+            // Since array is sorted, if current number is greater than
+            // target, all subsequent numbers will also be greater.
+            if(candidates[i] > target)
+                break;
+
+            // Choose current element
+            temp.push_back(candidates[i]);
+
+            // Move to next index because each element can be used only once
+            helper(i + 1, candidates, target - candidates[i], temp);
+
+            // Backtrack
+            temp.pop_back();
+        }
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+
+        // Sort to handle duplicates and enable pruning
+        sort(candidates.begin(), candidates.end());
+
+        vector<int> temp;
+
+        helper(0, candidates, target, temp);
+
+        return ans;
+    }
+};
+
+/*
+Time Complexity:
+----------------
+Sorting: O(n log n)
+
+Backtracking:
+In the worst case, every element can either be picked or not picked,
+giving approximately O(2^n) recursive states.
+
+Overall:
+O(n log n + 2^n)
+
+Space Complexity:
+-----------------
+Auxiliary recursion stack: O(n)
+Current combination vector (temp): O(n)
+
+Ignoring output:
+O(n)
+
+Including output:
+O(n * 2^n)
+because there can be up to 2^n subsets/combinations stored.
+*/
