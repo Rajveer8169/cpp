@@ -1,0 +1,47 @@
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+
+        vector<int> nums;   // Stores available numbers
+        int fact = 1;
+
+        // Compute (n-1)! and fill nums with 1 to n
+        for(int i = 1; i < n; i++) {
+            fact *= i;
+            nums.push_back(i);
+        }
+        nums.push_back(n);
+
+        string ans = "";
+
+        // Convert k to 0-based indexing
+        k--;
+
+        while(true) {
+
+            // Select the digit for the current position
+            ans += to_string(nums[k / fact]);
+
+            // Remove the used number
+            nums.erase(nums.begin() + k / fact);
+
+            // If no numbers are left, permutation is complete
+            if(nums.size() == 0) {
+                break;
+            }
+
+            // Find position within the current block
+            k = k % fact;
+
+            // Update factorial for the next position
+            fact = fact / nums.size();
+        }
+
+        return ans;
+    }
+};
+
+| Complexity | Value     |
+| ---------- | --------- |
+| Time       | **O(n²)** |
+| Space      | **O(n)**  |
