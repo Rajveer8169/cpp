@@ -1,6 +1,5 @@
 class Solution {
 public:
-
     // Time Complexity (TC): O(row)
     // Space Complexity (SC): O(row)
     vector<int> generaterow(int row) {
