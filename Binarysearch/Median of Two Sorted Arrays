@@ -2,7 +2,7 @@
 //Time: O(log(min(n1, n2)))
 //Binary search is performed on the smaller array only.
 //Space: O(1)
-//Only a few variables are used.
+//Only few variables are used.
 
 class Solution {
 public:
