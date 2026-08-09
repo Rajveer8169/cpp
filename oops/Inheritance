@@ -1,0 +1,36 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Person{
+    public:
+    string name;
+    int marks;
+    
+    Person(string name , int marks){
+        this->name = name;
+        this->marks = marks;
+    }
+};
+
+class Student : public Person{
+    public:
+    int rollno;
+    
+    Student(string name , int marks , int rollno) : Person(name , marks){
+        this->rollno = rollno;
+    }
+    
+    void getInfo(){
+        cout<<"Name: "<<name<<endl;
+        cout<<"Marks: "<<marks<<endl;
+        cout<<"Rollno: "<<rollno<<endl;
+    }
+};
+
+int main() {
+    Student s1("Rajveer",100,30);
+    s1.getInfo();
+    return 0;
+}
