@@ -1,0 +1,68 @@
+//Time Complexity
+//O(n)
+//There are three main operations:
+//Reverse the entire string → O(n)
+//Scan/copy every character → O(n)
+//Reverse each word → total O(n)
+//Therefore:
+//O(n) + O(n) + O(n) = O(n)
+//Space Complexity
+//O(1) auxiliary space
+//We are modifying the same string s and only using a few integer variables:
+
+class Solution {
+public:
+    string reverseWords(string s) {
+
+        // Step 1: Reverse the entire string
+        // This reverses the order of words,
+        // but also reverses each individual word.
+        reverse(s.begin(), s.end());
+
+        int n = s.size();
+
+        // left  -> start of the current word
+        // right -> position where we write characters
+        // i     -> scans the original reversed string
+        int left = 0;
+        int right = 0;
+        int i = 0;
+
+        while (i < n) {
+
+            // Skip leading/multiple spaces
+            while (i < n && s[i] == ' ') {
+                i++;
+            }
+
+            // No more words
+            if (i == n)
+                break;
+
+            // Copy the current word to the front
+            // using right as the writing pointer
+            while (i < n && s[i] != ' ') {
+                s[right] = s[i];
+                right++;
+                i++;
+            }
+
+            // The word is reversed because we reversed
+            // the entire string initially.
+            // Reverse this individual word to fix it.
+            reverse(s.begin() + left, s.begin() + right);
+
+            // Add exactly one space after each word
+            s[right] = ' ';
+            right++;
+
+            // Next word starts from right
+            left = right;
+        }
+
+        // Remove the extra space added after the last word
+        s.resize(right - 1);
+
+        return s;
+    }
+};
