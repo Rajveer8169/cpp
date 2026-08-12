@@ -1,0 +1,36 @@
+Time Complexity:  O(n) 
+Space Complexity: O(k)
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+
+        // If lengths are different,
+        // they cannot be anagrams
+        if (s.length() != t.length())
+            return false;
+
+        // Stores character -> frequency
+        unordered_map<char, int> freq;
+
+        // Count characters in s
+        for (char ch : s) {
+            freq[ch]++;
+        }
+
+        // Subtract characters using t
+        for (char ch : t) {
+            freq[ch]--;
+        }
+
+        // Every frequency should be 0
+        for (auto it : freq) {
+
+            // If any character has a different frequency
+            // then s and t are not anagrams
+            if (it.second != 0)
+                return false;
+        }
+
+        return true;
+    }
+};
