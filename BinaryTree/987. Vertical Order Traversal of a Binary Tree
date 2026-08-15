@@ -1,0 +1,79 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+
+    void helper(TreeNode* root, int row, int col,
+                map<int, vector<pair<int, int>>>& mp) {
+
+        // Base case
+        if (root == nullptr) return;
+
+        // Store row and value inside the current column
+        mp[col].push_back({row, root->val});
+
+        // Left child:
+        // row increases by 1
+        // column decreases by 1
+        helper(root->left, row + 1, col - 1, mp);
+
+        // Right child:
+        // row increases by 1
+        // column increases by 1
+        helper(root->right, row + 1, col + 1, mp);
+    }
+
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+
+        // column -> list of (row, value)
+        map<int, vector<pair<int, int>>> mp;
+
+        helper(root, 0, 0, mp);
+
+        vector<vector<int>> result;
+
+        // map gives columns from left to right
+        for (auto& [col, nodes] : mp) {
+
+            // Sort by:
+            // 1. row
+            // 2. value if row is same
+            sort(nodes.begin(), nodes.end());
+
+            vector<int> currentColumn;
+
+            for (auto& [row, value] : nodes) {
+                currentColumn.push_back(value);
+            }
+
+            result.push_back(currentColumn);
+        }
+
+        return result;
+    }
+};
+
+/*
+Time Complexity: O(N log N)
+
+- We visit every node once: O(N)
+- Nodes stored in map.
+- Sorting nodes within columns takes O(N log N) in the worst case.
+- Therefore, overall: O(N log N)
+
+Space Complexity: O(N)
+
+- map stores every node.
+- result stores every node.
+- Recursion stack can take O(H).
+- Overall auxiliary space: O(N)
+*/
