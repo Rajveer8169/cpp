@@ -1,0 +1,87 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+
+        // If tree is empty, width is 0
+        if (!root) return 0;
+
+        // Stores maximum width found so far
+        int ans = 0;
+
+        // Store {node, index}
+        // unsigned long long is used because index can become very large
+        queue<pair<TreeNode*, unsigned long long>> q;
+
+        // Root starts with index 0
+        q.push({root, 0});
+
+        // BFS traversal level by level
+        while (!q.empty()) {
+
+            // first and last store the relative indexes
+            // of the first and last node at current level
+            int first, last;
+
+            // Number of nodes at current level
+            int size = q.size();
+
+            // Minimum index of current level
+            // Used to normalize indexes and prevent them
+            // from becoming unnecessarily large
+            unsigned long long mmin = q.front().second;
+
+            for (int i = 0; i < size; i++) {
+
+                // Normalize the current node's index
+                // so that the first node of every level starts from 0
+                unsigned long long curr_id =
+                    q.front().second - mmin;
+
+                TreeNode* node = q.front().first;
+                q.pop();
+
+                // Store index of first node
+                if (i == 0)
+                    first = curr_id;
+
+                // Store index of last node
+                if (i == size - 1)
+                    last = curr_id;
+
+                // Left child gets index 2 * index + 1
+                if (node->left) {
+                    q.push({node->left, 2 * curr_id + 1});
+                }
+
+                // Right child gets index 2 * index + 2
+                if (node->right) {
+                    q.push({node->right, 2 * curr_id + 2});
+                }
+            }
+
+            // Width = last index - first index + 1
+            ans = max(ans, last - first + 1);
+        }
+
+        return ans;
+    }
+
+    // TC: O(N)
+    // Every node is pushed into and removed from the queue once.
+
+    // SC: O(N)
+    // In the worst case, the queue can contain O(N) nodes
+    // at the same level.
+};
