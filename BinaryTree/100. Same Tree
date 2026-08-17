@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+
+        // If both nodes are NULL, they are the same
+        if (p == nullptr && q == nullptr)
+            return true;
+
+        // If one node is NULL and the other is not,
+        // the structure is different
+        if (p == nullptr || q == nullptr)
+            return false;
+
+        // If values are different, trees are not the same
+        if (p->val != q->val)
+            return false;
+
+        // Compare left and right subtrees
+        return isSameTree(p->left, q->left) &&
+               isSameTree(p->right, q->right);
+    }
+
+    // TC: O(N)
+    // In the worst case, we visit every node.
+
+    // SC: O(H)
+    // H = height of the tree due to recursion stack.
+    // Worst case: O(N) for a skewed tree.
+};
