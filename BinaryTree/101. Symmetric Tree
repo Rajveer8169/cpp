@@ -1,0 +1,47 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+
+    // Time Complexity (TC): O(N), where N is the total number of nodes in the tree. 
+    // The algorithm visits every node in the worst case to verify symmetry.
+    //
+    // Space Complexity (SC): O(H), where H is the height of the tree. 
+    // This accounts for the maximum depth of the recursive call stack. 
+    // Worst case (skewed tree): O(N). Best/Average case (balanced tree): O(log N).
+    bool isMirror(TreeNode* left, TreeNode* right) {
+
+        // Both nodes are NULL
+        if (left == nullptr && right == nullptr)
+            return true;
+
+        // One is NULL, other is not
+        if (left == nullptr || right == nullptr)
+            return false;
+
+        // Values must be equal
+        if (left->val != right->val)
+            return false;
+
+        // Check opposite sides recursively
+        return isMirror(left->left, right->right) &&
+               isMirror(left->right, right->left);
+    }
+
+    bool isSymmetric(TreeNode* root) {
+
+        if (root == nullptr)
+            return true;
+
+        return isMirror(root->left, root->right);
+    }
+};
