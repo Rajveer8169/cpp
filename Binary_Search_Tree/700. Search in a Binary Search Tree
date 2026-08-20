@@ -1,0 +1,33 @@
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int val) {
+
+        // If root is NULL, value is not present
+        if (root == nullptr) {
+            return nullptr;
+        }
+
+        // If current node value matches, return the node
+        if (root->val == val) {
+            return root;
+        }
+
+        // If val is smaller, search in left subtree
+        if (root->val > val) {
+            return searchBST(root->left, val);
+        }
+
+        // If val is greater, search in right subtree
+        else {
+            return searchBST(root->right, val);
+        }
+
+        // TC: O(h), where h = height of BST
+        //     Balanced BST: O(log n)
+        //     Worst case: O(n)
+
+        // SC: O(h) due to recursive call stack
+        //     Balanced BST: O(log n)
+        //     Worst case: O(n)
+    }
+};
