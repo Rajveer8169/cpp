@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+class Employee {
+protected:
+    string name;
+    double salary;
+
+public:
+    Employee(string n, double s) {
+        name = n;
+        salary = s;
+    }
+
+    virtual double calculateBonus() = 0;
+
+    void display() {
+        cout << name << endl;
+    }
+};
+
+class Developer : public Employee {
+public:
+    Developer(string n, double s) : Employee(n, s) {}
+
+    double calculateBonus() override {
+        return salary * 0.10;
+    }
+};
+
+class Manager : public Employee {
+public:
+    Manager(string n, double s) : Employee(n, s) {}
+
+    double calculateBonus() override {
+        return salary * 0.20;
+    }
+};
+
+int main() {
+
+    Developer developer("Rajveer", 50000);
+    Manager manager("Rahul", 80000);
+
+    cout << developer.calculateBonus() << endl;
+    cout << manager.calculateBonus() << endl;
+
+    return 0;
+}
