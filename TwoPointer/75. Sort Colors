@@ -1,0 +1,44 @@
+class Solution {
+public:
+    // Dutch National Flag Algorithm
+    // 0s are placed at the beginning,
+    // 1s remain in the middle,
+    // 2s are placed at the end.
+    void sort(vector<int>& nums) {
+
+        int low = 0;
+        int mid = 0;
+        int high = nums.size() - 1;
+
+        while(mid <= high) {
+
+            // If current element is 0,
+            // swap it with the element at low.
+            if(nums[mid] == 0) {
+                swap(nums[low], nums[mid]);
+                low++;
+                mid++;
+            }
+
+            // If current element is 1,
+            // it is already in the correct region.
+            else if(nums[mid] == 1) {
+                mid++;
+            }
+
+            // If current element is 2,
+            // swap it with the element at high.
+            else {
+                swap(nums[mid], nums[high]);
+                high--;
+            }
+        }
+
+        // Time Complexity: O(n)
+        // Space Complexity: O(1)
+    }
+
+    void sortColors(vector<int>& nums) {
+        sort(nums);
+    }
+};
