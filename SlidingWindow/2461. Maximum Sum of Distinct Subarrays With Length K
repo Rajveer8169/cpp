@@ -1,0 +1,64 @@
+class Solution {
+public:
+    long long maximumSubarraySum(vector<int>& nums, int k) {
+
+        // Stores the maximum sum of a valid subarray
+        long long ans = 0;
+
+        // Stores the sum of the current sliding window
+        long long sum = 0;
+
+        // Stores frequency of each element in the current window
+        unordered_map<int, int> mp;
+
+        // Left pointer of the sliding window
+        int left = 0;
+
+        // Right pointer expands the sliding window
+        for (int right = 0; right < nums.size(); right++) {
+
+            // Add current element to the window
+            sum = sum + nums[right];
+
+            // Increase frequency of current element
+            mp[nums[right]]++;
+
+            // If window size becomes greater than k,
+            // remove the leftmost element
+            if (right - left + 1 > k) {
+
+                // Remove nums[left] from the window sum
+                sum = sum - nums[left];
+
+                // Decrease its frequency
+                mp[nums[left]]--;
+
+                // If frequency becomes 0, remove it from map
+                if (mp[nums[left]] == 0) {
+                    mp.erase(nums[left]);
+                }
+
+                // Move left pointer forward
+                left++;
+            }
+
+            // Check if:
+            // 1. Window size is exactly k
+            // 2. Number of unique elements is k
+            //    => All k elements are distinct
+            if (right - left + 1 == k && mp.size() == k) {
+
+                // Update maximum sum
+                ans = max(ans, sum);
+            }
+        }
+
+        return ans;
+    }
+
+    // Time Complexity: O(n)
+    // Each element is added and removed from the window at most once.
+    //
+    // Space Complexity: O(k)
+    // The unordered_map stores at most k elements.
+};
