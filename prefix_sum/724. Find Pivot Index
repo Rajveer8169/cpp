@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int pivotIndex(vector<int>& nums) {
+
+        // Calculate the total sum of the array
+        int totalSum = 0;
+
+        for (int num : nums) {
+            totalSum += num;
+        }
+
+        // Stores sum of elements strictly to the left
+        int leftSum = 0;
+
+        for (int i = 0; i < nums.size(); i++) {
+
+            // Right sum = total sum
+            // - left sum
+            // - current element
+            int rightSum = totalSum - leftSum - nums[i];
+
+            // If left sum == right sum,
+            // current index is the pivot index
+            if (leftSum == rightSum) {
+                return i;
+            }
+
+            // Add current element to left sum
+            // for the next iteration
+            leftSum += nums[i];
+        }
+
+        // No pivot index found
+        return -1;
+    }
+
+    // Time Complexity: O(n)
+    // We traverse the array twice -> O(n) + O(n) = O(n)
+
+    // Space Complexity: O(1)
+    // Only a few variables are used.
+};
