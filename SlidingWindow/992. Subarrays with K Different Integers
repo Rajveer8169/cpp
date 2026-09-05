@@ -1,0 +1,53 @@
+class Solution {
+public:
+
+    // Function to count subarrays having at most k distinct integers
+    int atMost(vector<int>& nums, int k) {
+
+        unordered_map<int, int> freq;
+
+        int left = 0;
+        int count = 0;
+
+        for (int right = 0; right < nums.size(); right++) {
+
+            // Add current element to the window
+            freq[nums[right]]++;
+
+            // If we have more than k distinct integers,
+            // shrink the window from the left
+            while (freq.size() > k) {
+
+                freq[nums[left]]--;
+
+                // Remove element completely if its frequency becomes 0
+                if (freq[nums[left]] == 0) {
+                    freq.erase(nums[left]);
+                }
+
+                left++;
+            }
+
+            // Number of valid subarrays ending at right
+            // = right - left + 1
+            count += right - left + 1;
+        }
+
+        return count;
+    }
+
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+
+        // Exactly k distinct =
+        // At most k distinct - At most (k - 1) distinct
+        return atMost(nums, k) - atMost(nums, k - 1);
+    }
+
+    // Time Complexity: O(n)
+    // Each element is added to and removed from the window
+    // at most once for each atMost() call.
+    // We call atMost() twice -> O(2n) = O(n).
+
+    // Space Complexity: O(n)
+    // The unordered_map can store up to n distinct integers.
+};
